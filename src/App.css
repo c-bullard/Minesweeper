@@ -1,0 +1,28 @@
+.minesweeperGridEasy {
+  display: grid;
+  grid-template-columns: repeat(10, 32px);
+  gap: 1px;
+  place-content: center;
+  border: 2px solid black;
+}
+
+.minesweeperGridMedium {
+  display: grid;
+  grid-template-columns: repeat(16, 32px);
+  gap: 1px;
+  place-content: center;
+}
+
+.minesweeperGridHard {
+  display: grid;
+  grid-template-columns: repeat(30, 32px);
+  gap: 1px;
+  place-content: center;
+}
+
+.minesweeperCell {
+  width: 32px;
+  height: 32px;
+  background-color: #4c545c;
+  border: 2px outset #e0e0e0;
+}
