@@ -119,6 +119,7 @@ export default function MinesweeperBoard() {
   // Updates the isFlagged key for cell[index] on right click
   const handleRightClick = (e, index) => {
     e.preventDefault();
+    console.log("Flag placed at cell:", index);
 
     const newCells = [];
     for (let i = 0; i < cells.length; i++) {
@@ -143,6 +144,8 @@ export default function MinesweeperBoard() {
   // Sets wasClicked to true for cell[index] on left click, unless it's flagged.
   // If the clicked cell is a bomb, reveals every bomb on the board.
   const handleLeftClick = (index) => {
+    console.log("Selected cell:", index);
+
     const clickedCell = cells[index];
     if (clickedCell.isFlagged) {
       return;

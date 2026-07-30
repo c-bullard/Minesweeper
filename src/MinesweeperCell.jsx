@@ -15,9 +15,9 @@ export default function MinesweeperCell({ cell, index, onLeftClick, onRightClick
       {cell.wasClicked && cell.isBomb ? (
         <img src="./mine.svg" alt="bomb" className="bombImage" />
       ) : null}
-      {cell.wasClicked && !cell.isBomb && cell.adjacentBombCount > 0
-        ? cell.adjacentBombCount
-        : null}
+      {cell.wasClicked && !cell.isBomb && cell.adjacentBombCount > 0 ? (
+        <span className="adjacentBombCount">{cell.adjacentBombCount}</span>
+      ) : null}
     </div>
   );
 }
