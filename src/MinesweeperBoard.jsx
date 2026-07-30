@@ -2,29 +2,67 @@ import "./App.css";
 import { useState } from "react";
 import MinesweeperCell from "./MinesweeperCell";
 
-// Grid size and amount of mines per difficulty
+// Amount of mines and row/column counts per difficulty
 const difficulty = {
-  easy: { grid: 100, mines: 10 },
-  medium: { grid: 256, mines: 40 },
-  hard: { grid: 480, mines: 99 },
+  easy: { mines: 10, rows: 10, columns: 10 },
+  medium: { mines: 40, rows: 16, columns: 16 },
+  hard: { mines: 99, rows: 16, columns: 30 },
 };
+
+// Total number of cells for a difficulty level
+function getGridSize(difficultyLevel) {
+  return difficultyLevel.rows * difficultyLevel.columns;
+}
 
 // Looks up the difficulty level that matches a given grid size
 function getDifficultyByGridSize(gridSize) {
-  if (gridSize === difficulty.easy.grid) {
+  if (gridSize === getGridSize(difficulty.easy)) {
     return difficulty.easy;
   }
-  if (gridSize === difficulty.medium.grid) {
+  if (gridSize === getGridSize(difficulty.medium)) {
     return difficulty.medium;
   }
-  if (gridSize === difficulty.hard.grid) {
+  if (gridSize === getGridSize(difficulty.hard)) {
     return difficulty.hard;
   }
 }
 
-// Creates starting cells and then places mines on random cell indices
+// Counts how many of cell[index]'s 8 neighbors are bombs
+function countAdjacentBombs(cellsToCheck, index, rows, columns) {
+  const row = Math.floor(index / columns);
+  const col = index % columns;
+
+  let bombCount = 0;
+  for (let rowDirection = -1; rowDirection <= 1; rowDirection++) {
+    for (let colDirection = -1; colDirection <= 1; colDirection++) {
+      if (rowDirection === 0 && colDirection === 0) {
+        continue;
+      }
+
+      const neighborRow = row + rowDirection;
+      const neighborCol = col + colDirection;
+      if (neighborRow < 0 || neighborRow >= rows) {
+        continue;
+      }
+      if (neighborCol < 0 || neighborCol >= columns) {
+        continue;
+      }
+
+      const neighborIndex = neighborRow * columns + neighborCol;
+      if (cellsToCheck[neighborIndex].isBomb) {
+        bombCount++;
+      }
+    }
+  }
+
+  return bombCount;
+}
+
+// Creates starting cells, places mines on random cell indices, then counts
+// each cell's adjacent bombs
 function createCells(difficultyLevel) {
-  const { grid, mines } = difficultyLevel;
+  const { mines, rows, columns } = difficultyLevel;
+  const grid = getGridSize(difficultyLevel);
 
   const newCells = [];
   for (let i = 0; i < grid; i++) {
@@ -50,11 +88,22 @@ function createCells(difficultyLevel) {
 
   console.log("Bombs placed at indexes:", bombIndexes);
 
+  for (let i = 0; i < grid; i++) {
+    if (!newCells[i].isBomb) {
+      newCells[i].adjacentBombCount = countAdjacentBombs(
+        newCells,
+        i,
+        rows,
+        columns,
+      );
+    }
+  }
+
   return newCells;
 }
 
 export default function MinesweeperBoard() {
-  const [gridSize, setGridSize] = useState(difficulty.easy.grid);
+  const [gridSize, setGridSize] = useState(getGridSize(difficulty.easy));
   const [cells, setCells] = useState(function () {
     return createCells(difficulty.easy);
   });
@@ -126,18 +175,21 @@ export default function MinesweeperBoard() {
   };
 
   const gridClassName =
-    gridSize === difficulty.easy.grid
+    gridSize === getGridSize(difficulty.easy)
       ? "minesweeperGridEasy"
-      : gridSize === difficulty.medium.grid
+      : gridSize === getGridSize(difficulty.medium)
         ? "minesweeperGridMedium"
         : "minesweeperGridHard";
 
   return (
     <div>
-      <select onChange={difficultyChange} defaultValue={difficulty.easy.grid}>
-        <option value={difficulty.easy.grid}>Beginner</option>
-        <option value={difficulty.medium.grid}>Intermediate</option>
-        <option value={difficulty.hard.grid}>Expert</option>
+      <select
+        onChange={difficultyChange}
+        defaultValue={getGridSize(difficulty.easy)}
+      >
+        <option value={getGridSize(difficulty.easy)}>Beginner</option>
+        <option value={getGridSize(difficulty.medium)}>Intermediate</option>
+        <option value={getGridSize(difficulty.hard)}>Expert</option>
       </select>
 
       <div className={gridClassName}>
