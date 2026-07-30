@@ -181,16 +181,10 @@ export default function MinesweeperBoard() {
         : "minesweeperGridHard";
 
   return (
-    <div>
-      <select
-        onChange={difficultyChange}
-        defaultValue={getGridSize(difficulty.easy)}
-      >
-        <option value={getGridSize(difficulty.easy)}>Beginner</option>
-        <option value={getGridSize(difficulty.medium)}>Intermediate</option>
-        <option value={getGridSize(difficulty.hard)}>Expert</option>
-      </select>
-
+    <>
+      <div>
+        <h1>Minesweeper</h1>
+      </div>
       <div className={gridClassName}>
         {cells.map((cell, index) => (
           <MinesweeperCell
@@ -202,6 +196,22 @@ export default function MinesweeperBoard() {
           />
         ))}
       </div>
-    </div>
+      <div className="selectDifficulty">
+        <label>Select a difficulty: </label>
+        <select
+          onChange={difficultyChange}
+          defaultValue={getGridSize(difficulty.easy)}
+        >
+          <option value={getGridSize(difficulty.easy)}>Beginner</option>
+          <option value={getGridSize(difficulty.medium)}>Intermediate</option>
+          <option value={getGridSize(difficulty.hard)}>Expert</option>
+        </select>
+      </div>
+      <div className="resetButton">
+        <button type="button" onClick={() => window.location.reload()}>
+          Reset
+        </button>
+      </div>
+    </>
   );
 }

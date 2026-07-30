@@ -57,3 +57,25 @@
   color: white;
   font-weight: bold;
 }
+
+h1 {
+  display: flex;
+  justify-content: center;
+}
+
+.selectDifficulty {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.selectDifficulty label {
+  padding-right: 5px;
+}
+
+.resetButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+}
