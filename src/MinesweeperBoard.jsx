@@ -34,23 +34,19 @@ function countAdjacentBombs(cellsToCheck, index, rows, columns) {
 
   let bombCount = 0;
   for (let rowDirection = -1; rowDirection <= 1; rowDirection++) {
-    for (let colDirection = -1; colDirection <= 1; colDirection++) {
-      if (rowDirection === 0 && colDirection === 0) {
-        continue;
-      }
+    for (let columnDirection = -1; columnDirection <= 1; columnDirection++) {
+      if (!(rowDirection === 0 && columnDirection === 0)) {
+        const neighborRow = row + rowDirection;
+        const neighborCol = col + columnDirection;
 
-      const neighborRow = row + rowDirection;
-      const neighborCol = col + colDirection;
-      if (neighborRow < 0 || neighborRow >= rows) {
-        continue;
-      }
-      if (neighborCol < 0 || neighborCol >= columns) {
-        continue;
-      }
-
-      const neighborIndex = neighborRow * columns + neighborCol;
-      if (cellsToCheck[neighborIndex].isBomb) {
-        bombCount++;
+        if (neighborRow >= 0 && neighborRow < rows) {
+          if (neighborCol >= 0 && neighborCol < columns) {
+            const neighborIndex = neighborRow * columns + neighborCol;
+            if (cellsToCheck[neighborIndex].isBomb) {
+              bombCount++;
+            }
+          }
+        }
       }
     }
   }
