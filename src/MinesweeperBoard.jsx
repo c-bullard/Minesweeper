@@ -91,18 +91,21 @@ export default function MinesweeperBoard() {
     setCells(newCells);
   };
 
-  // Sets wasClicked to true for cell[index] on left click, unless it's flagged
+  // Sets wasClicked to true for cell[index] on left click, unless it's flagged.
+  // If the clicked cell is a bomb, reveals every bomb on the board.
   const handleLeftClick = (index) => {
     const clickedCell = cells[index];
     if (clickedCell.isFlagged) {
       return;
     }
 
+    const gameOver = clickedCell.isBomb;
+
     const newCells = [];
     for (let i = 0; i < cells.length; i++) {
       const cell = cells[i];
 
-      if (i === index) {
+      if (i === index || (gameOver && cell.isBomb)) {
         const updatedCell = {
           wasClicked: true,
           isBomb: cell.isBomb,
@@ -117,7 +120,7 @@ export default function MinesweeperBoard() {
 
     setCells(newCells);
 
-    if (clickedCell.isBomb) {
+    if (gameOver) {
       alert("Game over!");
     }
   };
