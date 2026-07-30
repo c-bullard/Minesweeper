@@ -29,11 +29,15 @@
   box-sizing: border-box;
   width: 32px;
   height: 32px;
-  background-color: #62696f;
+  background-color: #c0c0c0;
   border: 2px outset #e0e0e0;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.minesweeperCellClicked {
+  background-color: #62696f;
 }
 
 .flagImage {

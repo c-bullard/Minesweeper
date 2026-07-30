@@ -1,7 +1,12 @@
-export default function MinesweeperCell({ cell, index, onRightClick }) {
+export default function MinesweeperCell({ cell, index, onLeftClick, onRightClick }) {
+  const cellClassName = cell.wasClicked
+    ? "minesweeperCell minesweeperCellClicked"
+    : "minesweeperCell";
+
   return (
     <div
-      className="minesweeperCell"
+      className={cellClassName}
+      onClick={() => onLeftClick(index)}
       onContextMenu={(e) => onRightClick(e, index)}
     >
       {cell.isFlagged ? (

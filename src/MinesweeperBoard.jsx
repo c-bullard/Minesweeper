@@ -36,15 +36,19 @@ function createCells(difficultyLevel) {
     });
   }
 
-  const mineCount = Math.floor(Math.random() * mines) + 1;
+  const mineCount = mines;
+  const bombIndexes = [];
   let minesPlaced = 0;
   while (minesPlaced < mineCount) {
     const randomIndex = Math.floor(Math.random() * grid);
     if (!newCells[randomIndex].isBomb) {
       newCells[randomIndex].isBomb = true;
+      bombIndexes.push(randomIndex);
       minesPlaced++;
     }
   }
+
+  console.log("Bombs placed at indexes:", bombIndexes);
 
   return newCells;
 }
@@ -85,6 +89,28 @@ export default function MinesweeperBoard() {
     setCells(newCells);
   };
 
+  // Sets wasClicked to true for cell[index] on left click, unless it's flagged
+  const handleLeftClick = (index) => {
+    const newCells = [];
+    for (let i = 0; i < cells.length; i++) {
+      const cell = cells[i];
+
+      if (i === index && !cell.isFlagged) {
+        const updatedCell = {
+          wasClicked: true,
+          isBomb: cell.isBomb,
+          adjacentBombCount: cell.adjacentBombCount,
+          isFlagged: cell.isFlagged,
+        };
+        newCells.push(updatedCell);
+      } else {
+        newCells.push(cell);
+      }
+    }
+
+    setCells(newCells);
+  };
+
   const gridClassName =
     gridSize === difficulty.easy.grid
       ? "minesweeperGridEasy"
@@ -106,6 +132,7 @@ export default function MinesweeperBoard() {
             key={index}
             cell={cell}
             index={index}
+            onLeftClick={handleLeftClick}
             onRightClick={handleRightClick}
           />
         ))}
