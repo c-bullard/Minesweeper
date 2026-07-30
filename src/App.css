@@ -1,3 +1,7 @@
+body {
+  background-color: #282828;
+}
+
 .minesweeperGridEasy {
   display: grid;
   grid-template-columns: repeat(10, 32px);
@@ -61,6 +65,7 @@
 h1 {
   display: flex;
   justify-content: center;
+  color: white;
 }
 
 .selectDifficulty {
@@ -71,6 +76,7 @@ h1 {
 
 .selectDifficulty label {
   padding-right: 5px;
+  color: white;
 }
 
 .resetButton {
