@@ -12,6 +12,9 @@ export default function MinesweeperCell({ cell, index, onLeftClick, onRightClick
       {cell.isFlagged ? (
         <img src="./flag.svg" alt="flag" className="flagImage" />
       ) : null}
+      {cell.wasClicked && cell.isBomb ? (
+        <img src="./mine.svg" alt="bomb" className="bombImage" />
+      ) : null}
     </div>
   );
 }

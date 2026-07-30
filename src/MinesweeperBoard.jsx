@@ -55,7 +55,9 @@ function createCells(difficultyLevel) {
 
 export default function MinesweeperBoard() {
   const [gridSize, setGridSize] = useState(difficulty.easy.grid);
-  const [cells, setCells] = useState(createCells(difficulty.easy));
+  const [cells, setCells] = useState(function () {
+    return createCells(difficulty.easy);
+  });
 
   // Updates the grid size and recreates cells with new mines when difficulty changes
   const difficultyChange = (e) => {
@@ -91,11 +93,16 @@ export default function MinesweeperBoard() {
 
   // Sets wasClicked to true for cell[index] on left click, unless it's flagged
   const handleLeftClick = (index) => {
+    const clickedCell = cells[index];
+    if (clickedCell.isFlagged) {
+      return;
+    }
+
     const newCells = [];
     for (let i = 0; i < cells.length; i++) {
       const cell = cells[i];
 
-      if (i === index && !cell.isFlagged) {
+      if (i === index) {
         const updatedCell = {
           wasClicked: true,
           isBomb: cell.isBomb,
@@ -109,6 +116,10 @@ export default function MinesweeperBoard() {
     }
 
     setCells(newCells);
+
+    if (clickedCell.isBomb) {
+      alert("Game over!");
+    }
   };
 
   const gridClassName =

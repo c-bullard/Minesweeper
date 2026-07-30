@@ -45,3 +45,10 @@
   height: auto;
   pointer-events: none;
 }
+
+.bombImage {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  background-color: red;
+}
