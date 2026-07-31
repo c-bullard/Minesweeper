@@ -40,6 +40,10 @@ body {
   align-items: center;
 }
 
+.minesweeperCell:not(.minesweeperCellClicked):hover {
+  background-color: #d4d4d4;
+}
+
 .minesweeperCellClicked {
   background-color: #62696f;
   border: none;

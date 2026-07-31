@@ -14,12 +14,12 @@ function getGridSize(difficultyLevel) {
   return difficultyLevel.rows * difficultyLevel.columns;
 }
 
-// Counts how many of cell[index]'s 8 neighbors are bombs
-function countAdjacentBombs(cellsToCheck, index, rows, columns) {
+// Returns the indices of the 8 squares around selection
+function getNeighborIndexes(index, rows, columns) {
   const row = Math.floor(index / columns);
   const col = index % columns;
 
-  let bombCount = 0;
+  const neighborIndexes = [];
   for (let rowDirection = -1; rowDirection <= 1; rowDirection++) {
     for (let columnDirection = -1; columnDirection <= 1; columnDirection++) {
       if (!(rowDirection === 0 && columnDirection === 0)) {
@@ -28,21 +28,31 @@ function countAdjacentBombs(cellsToCheck, index, rows, columns) {
 
         if (neighborRow >= 0 && neighborRow < rows) {
           if (neighborCol >= 0 && neighborCol < columns) {
-            const neighborIndex = neighborRow * columns + neighborCol;
-            if (cellsToCheck[neighborIndex].isBomb) {
-              bombCount++;
-            }
+            neighborIndexes.push(neighborRow * columns + neighborCol);
           }
         }
       }
     }
   }
 
+  return neighborIndexes;
+}
+
+// Counts how many of cell[index]'s 8 neighbors are bombs
+function countAdjacentBombs(cellsToCheck, index, rows, columns) {
+  const neighborIndexes = getNeighborIndexes(index, rows, columns);
+
+  let bombCount = 0;
+  for (let i = 0; i < neighborIndexes.length; i++) {
+    if (cellsToCheck[neighborIndexes[i]].isBomb) {
+      bombCount++;
+    }
+  }
+
   return bombCount;
 }
 
-// Creates starting cells, places mines on random cell indices, then counts
-// each cell's adjacent bombs
+// Creates starting cells, places mines on random cell indices, then counts each cell's adjacent bombs
 function createCells(difficultyLevel) {
   const { mines, rows, columns } = difficultyLevel;
   const grid = getGridSize(difficultyLevel);
