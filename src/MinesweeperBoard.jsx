@@ -15,11 +15,11 @@ function getGridSize(difficultyLevel) {
 }
 
 // Returns the indices of the 8 squares around selection
-function getNeighborIndexes(index, rows, columns) {
+function getNeighborIndices(index, rows, columns) {
   const row = Math.floor(index / columns);
   const col = index % columns;
 
-  const neighborIndexes = [];
+  const neighborIndices = [];
   for (let rowDirection = -1; rowDirection <= 1; rowDirection++) {
     for (let columnDirection = -1; columnDirection <= 1; columnDirection++) {
       if (!(rowDirection === 0 && columnDirection === 0)) {
@@ -28,23 +28,23 @@ function getNeighborIndexes(index, rows, columns) {
 
         if (neighborRow >= 0 && neighborRow < rows) {
           if (neighborCol >= 0 && neighborCol < columns) {
-            neighborIndexes.push(neighborRow * columns + neighborCol);
+            neighborIndices.push(neighborRow * columns + neighborCol);
           }
         }
       }
     }
   }
 
-  return neighborIndexes;
+  return neighborIndices;
 }
 
 // Counts how many of cell[index]'s 8 neighbors are bombs
 function countAdjacentBombs(cellsToCheck, index, rows, columns) {
-  const neighborIndexes = getNeighborIndexes(index, rows, columns);
+  const neighborIndices = getNeighborIndices(index, rows, columns);
 
   let bombCount = 0;
-  for (let i = 0; i < neighborIndexes.length; i++) {
-    if (cellsToCheck[neighborIndexes[i]].isBomb) {
+  for (let i = 0; i < neighborIndices.length; i++) {
+    if (cellsToCheck[neighborIndices[i]].isBomb) {
       bombCount++;
     }
   }
@@ -68,18 +68,18 @@ function createCells(difficultyLevel) {
   }
 
   const mineCount = mines;
-  const bombIndexes = [];
+  const bombIndices = [];
   let minesPlaced = 0;
   while (minesPlaced < mineCount) {
     const randomIndex = Math.floor(Math.random() * grid);
     if (!newCells[randomIndex].isBomb) {
       newCells[randomIndex].isBomb = true;
-      bombIndexes.push(randomIndex);
+      bombIndices.push(randomIndex);
       minesPlaced++;
     }
   }
 
-  console.log("Bombs placed at indexes:", bombIndexes);
+  console.log("Bombs placed at indices:", bombIndices);
 
   for (let i = 0; i < grid; i++) {
     if (!newCells[i].isBomb) {
