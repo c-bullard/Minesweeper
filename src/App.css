@@ -34,7 +34,7 @@ body {
   width: 32px;
   height: 32px;
   background-color: #c0c0c0;
-  border: 2px outset #e0e0e0;
+  border: 4px outset #e0e0e0;
   display: flex;
   justify-content: center;
   align-items: center;
