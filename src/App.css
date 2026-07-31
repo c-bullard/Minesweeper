@@ -42,6 +42,7 @@ body {
 
 .minesweeperCellClicked {
   background-color: #62696f;
+  border: none;
 }
 
 .flagImage {
