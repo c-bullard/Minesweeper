@@ -4,27 +4,14 @@ import MinesweeperCell from "./MinesweeperCell";
 
 // Amount of mines and row/column counts per difficulty
 const difficulty = {
-  easy: { mines: 10, rows: 10, columns: 10 },
-  medium: { mines: 40, rows: 16, columns: 16 },
-  hard: { mines: 99, rows: 16, columns: 30 },
+  beginner: { mines: 10, rows: 10, columns: 10 },
+  intermediate: { mines: 40, rows: 16, columns: 16 },
+  expert: { mines: 99, rows: 16, columns: 30 },
 };
 
 // Total number of cells for a difficulty level
 function getGridSize(difficultyLevel) {
   return difficultyLevel.rows * difficultyLevel.columns;
-}
-
-// Looks up the difficulty level that matches a given grid size
-function getDifficultyByGridSize(gridSize) {
-  if (gridSize === getGridSize(difficulty.easy)) {
-    return difficulty.easy;
-  }
-  if (gridSize === getGridSize(difficulty.medium)) {
-    return difficulty.medium;
-  }
-  if (gridSize === getGridSize(difficulty.hard)) {
-    return difficulty.hard;
-  }
 }
 
 // Counts how many of cell[index]'s 8 neighbors are bombs
@@ -99,17 +86,17 @@ function createCells(difficultyLevel) {
 }
 
 export default function MinesweeperBoard() {
-  const [gridSize, setGridSize] = useState(getGridSize(difficulty.easy));
+  const [gridSize, setGridSize] = useState(getGridSize(difficulty.beginner));
   const [cells, setCells] = useState(function () {
-    return createCells(difficulty.easy);
+    return createCells(difficulty.beginner);
   });
 
   // Updates the grid size and recreates cells with new mines when difficulty changes
   const difficultyChange = (e) => {
-    const newSize = Number(e.target.value);
-    const selectedDifficulty = getDifficultyByGridSize(newSize);
-    setGridSize(newSize);
+    const selectedDifficulty = difficulty[e.target.value];
+    setGridSize(getGridSize(selectedDifficulty));
     setCells(createCells(selectedDifficulty));
+    console.log(e.target.value);
   };
 
   // Updates the isFlagged key for cell[index] on right click
@@ -174,11 +161,11 @@ export default function MinesweeperBoard() {
   };
 
   const gridClassName =
-    gridSize === getGridSize(difficulty.easy)
-      ? "minesweeperGridEasy"
-      : gridSize === getGridSize(difficulty.medium)
-        ? "minesweeperGridMedium"
-        : "minesweeperGridHard";
+    gridSize === getGridSize(difficulty.beginner)
+      ? "minesweeperGridBeginner"
+      : gridSize === getGridSize(difficulty.intermediate)
+        ? "minesweeperGridIntermediate"
+        : "minesweeperGridExpert";
 
   return (
     <>
@@ -198,13 +185,10 @@ export default function MinesweeperBoard() {
       </div>
       <div className="selectDifficulty">
         <label>Select a difficulty: </label>
-        <select
-          onChange={difficultyChange}
-          defaultValue={getGridSize(difficulty.easy)}
-        >
-          <option value={getGridSize(difficulty.easy)}>Beginner</option>
-          <option value={getGridSize(difficulty.medium)}>Intermediate</option>
-          <option value={getGridSize(difficulty.hard)}>Expert</option>
+        <select onChange={difficultyChange} defaultValue="beginner">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="expert">Expert</option>
         </select>
       </div>
       <div className="resetButton">

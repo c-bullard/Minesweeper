@@ -1,4 +1,9 @@
-export default function MinesweeperCell({ cell, index, onLeftClick, onRightClick }) {
+export default function MinesweeperCell({
+  cell,
+  index,
+  onLeftClick,
+  onRightClick,
+}) {
   const cellClassName = cell.wasClicked
     ? "minesweeperCell minesweeperCellClicked"
     : "minesweeperCell";
@@ -16,7 +21,7 @@ export default function MinesweeperCell({ cell, index, onLeftClick, onRightClick
         <img src="./mine.svg" alt="bomb" className="bombImage" />
       ) : null}
       {cell.wasClicked && !cell.isBomb && cell.adjacentBombCount > 0 ? (
-        <span className="adjacentBombCount">{cell.adjacentBombCount}</span>
+        <div className="adjacentBombCount">{cell.adjacentBombCount}</div>
       ) : null}
     </div>
   );
